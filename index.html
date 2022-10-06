@@ -20,13 +20,11 @@
 			</a>
 		</div>
 	</nav>
-	<div class="container" id="markupData">
+	<div class="container">
 		<div class="card text-bg-primary mb-3">
 			<div class="card-header">Data printed form google spreadsheet</div>
-			<div class="card-body">
-				<h5 class="card-title">Primary card title</h5>
-				<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-					card's content.</p>
+			<div class="card-body" id="markupData">
+
 			</div>
 		</div>
 	</div>
@@ -35,7 +33,6 @@
 			'https://script.googleusercontent.com/macros/echo?user_content_key=FsRGO4Nrh9ctbmQb0Ih62hAreHm8a0kruLeR37VQ7xWfcwM3TEC3CTZo8nDNP8_B5bkf4FFvfYH_ZjT8IrXJatNALjP3QVU3m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCqQNMZWqQ_9Gl88ZtllJfAQCa-sdm0RrjRAyLBbVxS0NgaKJ8AE_us9z9vua3AGJirLRUalYf6VBFY_Ab3-BiMNNk3a14BP49z9Jw9Md8uu&lib=MYo3xlMIj3dypKdE-gSPHNrw_oxorxyVD';
 
 		const userList = [];
-		let markup = document.querySelector('#markupData');
 		document.addEventListener('DOMContentLoaded', init);
 
 		async function init() {
@@ -43,23 +40,41 @@
 				.then(response => response.json())
 				.then(data => {
 					userList.push(data.users);
-					console.log(userList)
-
+					printData(userList[0]);
 
 				})
 				.catch(error => {
-					console.log(error);
+					console.error(error);
 				})
 
-			// printData()
 		}
 
-		// function printData(param) {
+		function printData(param) {
+			const selectMarkup = document.querySelector('#markupData');
 
-		// 	console.log(param);
+			const table = document.createElement('table');
+			const tableHead = document.createElement("thead");
+			const tableBody = document.createElement("tbody");
+			const row = document.createElement("tr");
+
+			// create table heaad
+			userList.forEach(ele => {
+				const headerData = ele[0];
+				// const headBody = ele.slice(1, userList.length);
+				for (let i of headerData) {
+					const cell = document.createElement("th");
+					const cellText = document.createTextNode(`${i}`);
+					cell.appendChild(cellText);
+					row.appendChild(cell);
+				}
+				tableHead.appendChild(row);
+				table.appendChild(tableHead);
+			})
+
+			selectMarkup.appendChild(table);
 
 
-		// }
+		}
 	</script>
 	<!-- JavaScript Bundle with Popper -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
