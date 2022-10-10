@@ -41,12 +41,10 @@
 				.then(data => {
 					userList.push(data.users);
 					printData(userList[0]);
-
 				})
 				.catch(error => {
 					console.error(error);
-				})
-
+				});
 		}
 
 		function printData(param) {
@@ -56,24 +54,41 @@
 			const tableHead = document.createElement("thead");
 			const tableBody = document.createElement("tbody");
 			const row = document.createElement("tr");
-
+			console.log({userList});
 			// create table heaad
-			userList.forEach(ele => {
-				const headerData = ele[0];
-				// const headBody = ele.slice(1, userList.length);
-				for (let i of headerData) {
-					const cell = document.createElement("th");
-					const cellText = document.createTextNode(`${i}`);
-					cell.appendChild(cellText);
-					row.appendChild(cell);
+			userList[0].forEach((ele, i) => {
+				// console.log({ele, i});
+				if (i == 0) {
+					// console.log({ele});
+					for (let j=0; j<ele.length; j++) {
+						const dataCell = ele[j];
+						
+						console.log({cell: dataCell});
+						// console.log(i);
+						const cell = document.createElement("th");
+						const cellText = document.createTextNode(`${j}`);
+						cell.appendChild(cellText);
+						row.appendChild(cell);
+						tableHead.appendChild(row);
+						table.appendChild(tableHead);
+					}
+				} 
+				else {
+					for (let j=0; j<ele.length; j++) {
+						const dataCell = ele[j];
+						
+						console.log({cell: dataCell});
+						// console.log(j);
+						const cell = document.createElement("td");
+						const cellText = document.createTextNode(`${j}`);
+						cell.appendChild(cellText);
+						row.appendChild(cell);
+						tableBody.appendChild(row);
+						table.appendChild(tableBody);
+					}
 				}
-				tableHead.appendChild(row);
-				table.appendChild(tableHead);
+				return selectMarkup.appendChild(table);
 			})
-
-			selectMarkup.appendChild(table);
-
-
 		}
 	</script>
 	<!-- JavaScript Bundle with Popper -->
