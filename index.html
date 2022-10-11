@@ -23,9 +23,7 @@
 	<div class="container">
 		<div class="card text-bg-primary mb-3">
 			<div class="card-header">Data printed form google spreadsheet</div>
-			<div class="card-body" id="markupData">
-
-			</div>
+			<div class="card-body" id="markupData"></div>
 		</div>
 	</div>
 	<script>
@@ -35,7 +33,7 @@
 		const userList = [];
 		document.addEventListener('DOMContentLoaded', init);
 
-		async function init() {
+		async function init () {
 			fetch(apiUrl)
 				.then(response => response.json())
 				.then(data => {
@@ -47,40 +45,33 @@
 				});
 		}
 
-		function printData(param) {
+		function printData (param) {
 			const selectMarkup = document.querySelector('#markupData');
 
 			const table = document.createElement('table');
 			const tableHead = document.createElement("thead");
 			const tableBody = document.createElement("tbody");
-			const row = document.createElement("tr");
-			console.log({userList});
+
 			// create table heaad
 			userList[0].forEach((ele, i) => {
-				// console.log({ele, i});
+				const row = document.createElement("tr");
 				if (i == 0) {
-					// console.log({ele});
-					for (let j=0; j<ele.length; j++) {
+					for (let j = 0; j < ele.length; j++) {
 						const dataCell = ele[j];
-						
-						console.log({cell: dataCell});
-						// console.log(i);
+
 						const cell = document.createElement("th");
-						const cellText = document.createTextNode(`${j}`);
+						const cellText = document.createTextNode(`${dataCell}`);
 						cell.appendChild(cellText);
 						row.appendChild(cell);
 						tableHead.appendChild(row);
 						table.appendChild(tableHead);
 					}
-				} 
+				}
 				else {
-					for (let j=0; j<ele.length; j++) {
+					for (let j = 0; j < ele.length; j++) {
 						const dataCell = ele[j];
-						
-						console.log({cell: dataCell});
-						// console.log(j);
 						const cell = document.createElement("td");
-						const cellText = document.createTextNode(`${j}`);
+						const cellText = document.createTextNode(`${dataCell}`);
 						cell.appendChild(cellText);
 						row.appendChild(cell);
 						tableBody.appendChild(row);
@@ -88,13 +79,13 @@
 					}
 				}
 				return selectMarkup.appendChild(table);
-			})
+			});
 		}
 	</script>
 	<!-- JavaScript Bundle with Popper -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
-	</script>
+		</script>
 </body>
 
 </html>
