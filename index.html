@@ -15,8 +15,7 @@
 	<nav class="navbar navbar-dark bg-primary mb-3">
 		<div class="container">
 			<a class="navbar-brand" href="#">
-				<img src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30"
-					height="24"> Bootstrap
+				<img src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24"> Bootstrap
 			</a>
 		</div>
 	</nav>
@@ -27,18 +26,21 @@
 		</div>
 	</div>
 	<script>
-		const apiUrl =
-			'https://script.googleusercontent.com/macros/echo?user_content_key=FsRGO4Nrh9ctbmQb0Ih62hAreHm8a0kruLeR37VQ7xWfcwM3TEC3CTZo8nDNP8_B5bkf4FFvfYH_ZjT8IrXJatNALjP3QVU3m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCqQNMZWqQ_9Gl88ZtllJfAQCa-sdm0RrjRAyLBbVxS0NgaKJ8AE_us9z9vua3AGJirLRUalYf6VBFY_Ab3-BiMNNk3a14BP49z9Jw9Md8uu&lib=MYo3xlMIj3dypKdE-gSPHNrw_oxorxyVD';
-
+		const id = '1yVmZHMynwD7z6s-DdyOCKx2XdVjXrrxgWzm5TVcps4M';
+		const sheet = 'Sheet1';
+		const apiUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${sheet}`;
 		const userList = [];
 		document.addEventListener('DOMContentLoaded', init);
 
 		async function init () {
 			fetch(apiUrl)
-				.then(response => response.json())
+				.then(response => response.text())
 				.then(data => {
-					userList.push(data.users);
-					printData(userList[0]);
+					let splitLine = data.split('\n');
+					splitLine.forEach((data)=>{
+						userList.push(data.split(','));
+					})
+					printData(userList);
 				})
 				.catch(error => {
 					console.error(error);
@@ -49,16 +51,18 @@
 			const selectMarkup = document.querySelector('#markupData');
 
 			const table = document.createElement('table');
+			table.classList.add('table');
+			table.style.color = '#fff';
 			const tableHead = document.createElement("thead");
 			const tableBody = document.createElement("tbody");
 
 			// create table heaad
-			userList[0].forEach((ele, i) => {
+			userList.forEach((ele, i) => {
 				const row = document.createElement("tr");
-				if (i == 0) {
+				if (i === 0) {
 					for (let j = 0; j < ele.length; j++) {
-						const dataCell = ele[j];
-
+						let dataCell = ele[j];
+						dataCell = dataCell.replaceAll('"', '');
 						const cell = document.createElement("th");
 						const cellText = document.createTextNode(`${dataCell}`);
 						cell.appendChild(cellText);
@@ -69,7 +73,8 @@
 				}
 				else {
 					for (let j = 0; j < ele.length; j++) {
-						const dataCell = ele[j];
+						let dataCell = ele[j];
+						dataCell = dataCell.replaceAll('"', '');
 						const cell = document.createElement("td");
 						const cellText = document.createTextNode(`${dataCell}`);
 						cell.appendChild(cellText);
